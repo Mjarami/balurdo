@@ -1,0 +1,16 @@
+Bienvendio a el proyecto "balurdo"
+
+menu:
+
+1-wallpaper: Es la carpeta central del proyecto, descargala y situala en "$HOME/Imágenes"
+2-fondo-dinamico: Es la carpeta donde colocar las imagenes que desees agregar para la presentacion.
+3-proceso1.py: Archivo de python que permite procesar la lista-imagenes.txt y crear el fondo.xml
+4-randon.sh: Archivo de bash que lee las imagenes en la carpeta fondo-dinamico y procede a crear lista-imagenes.txt, tambien es el encargado de situar los procesos dentro de la carpeta wallpaper y de ejecutar proceso1.py
+5-lista-imagenes.txt: Archivo generado por proceso1.py en el cual se agrega una lista de las imagenes contenidas en la carpeta fondo-dinamico
+6-fondo.xml: Archivo generado por proceso1.py el cual contiene una presentacion de la lista contenida en lista-imagenes.txt para ser cargada por el sistema
+
+Para iniciar solo debes acceder a la carpeta wallpaper y ejecutar el archivo randon.sh, asegurate de que tenga permisos de ejecucion
+para asegurar que todo salga como se debe se recomienda abrir una consola y ejecutar el script randon.sh
+
+
+listo es todo por ahora, espero te funcione
