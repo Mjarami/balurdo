@@ -1,9 +1,62 @@
 import os
 import datetime
+from tkinter import *
+import shlex, subprocess
+
+def tiempo_global():
+    tiempo = globals()['tiempo'].replace(" ","")
+    return tiempo
+
+def crea_ventana1():
+    ventana = Tk()
+    ventana.title("Balurdo")
+    etiqueta = Label(ventana, text="Bienvenido, estoy muy contento de que pruebes al 'Balurdo'\n Siente comodo de dejarme tus comentarios y sugerencias\nSin mas preambulo arranquemos")
+    boton = Button(ventana, text="OK!!", command=crea_ventana2)
+    boton2 = Button(ventana, text="Cerrar", command=ventana.destroy)
+    etiqueta.pack()
+    boton.pack()
+    boton2.pack()
+    ventana.mainloop()
+
+def crea_ventana2():
+    def devolverDatos():
+        globals()['tiempo'] = "{}".format(tiempo.get())
+        define_directorio(directorio.get())
+    ventana = Tk()
+    ventana.title("Data inicial")
+    vp = Frame(ventana)
+    vp.grid(column=0, row=0, padx=(50,50), pady=(10,10))
+    vp.columnconfigure(0, weight=1)
+    vp.rowconfigure(0, weight=1)
+    etiqueta_ejemplo_texto = Label(vp, text="Ejemplo --> ")
+    etiqueta_ejemplo_texto.grid(column=2, row=2, sticky=(W,E))
+    etiqueta_ejemplo = Label(vp, text=os.getcwd())
+    etiqueta_ejemplo.grid(column=3, row=2, sticky=(W,E))
+    etiqueta_carpeta = Label(vp, text="Directorio:")
+    etiqueta_carpeta.grid(column=2, row=3, sticky=(W,E))
+    directorio_string = StringVar()
+    directorio = Entry(vp, width=20, textvariable=directorio_string)
+    directorio.grid(column=3, row=3)
+    etiqueta_tiempo = Label(vp, text="Tiempo:")
+    etiqueta_tiempo.grid(column=2, row=4, sticky=(W,E))
+    tiempo_string = StringVar()
+    tiempo = Entry(vp, width=20, textvariable=tiempo_string)
+    tiempo_string.set(tiempo)
+    tiempo.grid(column=3, row=4)
+    boton = Button(ventana, text="Guardar", command=devolverDatos)
+    boton.grid(column=4, row=4)
+    boton = Button(ventana, text="Cerrar", command=ventana.destroy)
+    boton.grid(column=5, row=4)
+    
+def define_directorio(directorio):
+    actual = os.getcwd()
+    archivo = gestiona_archivo(os.getcwd()+'/directorio.txt','w', directorio)
+    archivo = gestiona_archivo(os.getcwd()+'/directorio2.txt','w', actual)
+    escribe()
 
 def gestiona_archivo(ubicacion, proceso, edita):
     f = open (ubicacion, proceso)
-    if proceso == 'a':
+    if proceso == 'a' or proceso == 'w':
         gestiona= f.write(edita)
     else:
         gestiona = f.read()
@@ -41,7 +94,9 @@ def gestiona_xml(lista):
     ## Se crea la lista de llegada
     lista2 = lista[1:]
     ## Se procede a crear y escribir en el documento .xml
-    tiempo = '300'
+    tiempo = tiempo_global()
+    if tiempo == None or tiempo == "":
+        tiempo = "300"
     for v1,v2 in zip(lista,lista2):
         documento += "\t<static>\n\t\t<duration>"+tiempo+"</duration>\n\t\t<file>"+v1+"</file>\n\t</static>\n"
         documento += "\t<transition>\n\t\t<duration>5.0</duration>\n\t\t<from>"+v1+"</from>\n"
@@ -50,8 +105,13 @@ def gestiona_xml(lista):
     escribe = documento+final
     return escribe
 
-def cuerpo():
+def escribe():
     ## Se cargan las imagenes leyendo el archivo .txt
+    p1 = subprocess.run(["cat", "directorio.txt"], stdout=subprocess.PIPE)
+    dir = p1.stdout
+    p2 = subprocess.run("ls", cwd = dir+"/*.jpg", stdout=subprocess.PIPE)
+    imagenes = p2.stdout
+    archivo = gestiona_archivo(os.getcwd()+'/lista-imagenes.txt','w', imagenes)
     archivo = gestiona_archivo(os.getcwd()+'/lista-imagenes.txt', 'r', "")
     lista = gestiona_cadena(archivo)
     ## Se procede a estructurar el documento .xml con la lista de imagenes
@@ -59,5 +119,5 @@ def cuerpo():
     ## Se crea el documento .xml
     archivo = gestiona_archivo(os.getcwd()+'/fondo.xml','a', escribe)
 
-cuerpo()
+crea_ventana1()
 
