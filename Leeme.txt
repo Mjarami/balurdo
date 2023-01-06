@@ -2,12 +2,11 @@ Bienvendio a el proyecto "balurdo"
 
 menu:
 
-2-directorio: Es la carpeta donde colocar las imagenes que desees agregar para la presentacion.
-3-proceso1.py: Archivo de python que permite solicitar al usuario el directorio y asignar el tiempo en segundos para el cambio de fondo.
-3-proceso2.py: Archivo de python que permite procesar la lista-imagenes.txt y crear el fondo.xml
-4-start.sh: Archivo de bash que ejecuta los archivos proceso1.py y proceso2.py, tambien lee las imagenes en directorio y procede a crear lista-imagenes.txt.
-5-lista-imagenes.txt: Archivo generado por start.sh en el cual se agrega una lista de las imagenes contenidas en el directorio
-6-fondo.xml: Archivo generado por proceso2.py el cual contiene una presentacion de la lista contenida en lista-imagenes.txt para ser cargada por el sistema
+directorio: Es la carpeta donde colocar las imagenes que desees agregar para la presentacion.
+proceso.py: Archivo de python que permite solicitar al usuario el directorio y asignar el tiempo en segundos para el cambio de fondo procesar la lista-imagenes.txt y crear el fondo.xml
+start.sh: Archivo de bash que ejecuta el archivo proceso.py.
+lista-imagenes.txt: Archivo generado por proceso.py en el cual se agrega una lista de las imagenes contenidas en el directorio
+fondo.xml: Archivo generado por proceso.py el cual contiene una presentacion de la lista contenida en lista-imagenes.txt para ser cargada por el sistema
 
 Para iniciar solo debes ejecutar el archivo start.sh, asegurate de que tenga permisos de ejecucion
 para asegurar que todo salga como se debe.

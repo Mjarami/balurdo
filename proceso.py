@@ -1,7 +1,7 @@
 import os
 import datetime
 from tkinter import *
-import shlex, subprocess
+import subprocess
 
 def tiempo_global():
     tiempo = globals()['tiempo'].replace(" ","")
@@ -21,6 +21,7 @@ def crea_ventana1():
 def crea_ventana2():
     def devolverDatos():
         globals()['tiempo'] = "{}".format(tiempo.get())
+        globals()['directorio'] = "{}".format(directorio.get())
         define_directorio(directorio.get())
     ventana = Tk()
     ventana.title("Data inicial")
@@ -106,18 +107,17 @@ def gestiona_xml(lista):
     return escribe
 
 def escribe():
+    ## Se genera el archivo lista-imagenes
+    directorio = globals()['directorio'].replace(" ","")
+    result = subprocess.run(["ls", directorio], capture_output=True, text=True)
+    archivo = gestiona_archivo(os.getcwd()+'/lista-imagenes.txt','w', result.stdout)
     ## Se cargan las imagenes leyendo el archivo .txt
-    p1 = subprocess.run(["cat", "directorio.txt"], stdout=subprocess.PIPE)
-    dir = p1.stdout
-    p2 = subprocess.run("ls", cwd = dir+"/*.jpg", stdout=subprocess.PIPE)
-    imagenes = p2.stdout
-    archivo = gestiona_archivo(os.getcwd()+'/lista-imagenes.txt','w', imagenes)
     archivo = gestiona_archivo(os.getcwd()+'/lista-imagenes.txt', 'r', "")
     lista = gestiona_cadena(archivo)
     ## Se procede a estructurar el documento .xml con la lista de imagenes
     escribe = gestiona_xml(lista)
     ## Se crea el documento .xml
-    archivo = gestiona_archivo(os.getcwd()+'/fondo.xml','a', escribe)
+    archivo = gestiona_archivo(os.getcwd()+'/fondo.xml','w', escribe)
 
 crea_ventana1()
 
