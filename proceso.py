@@ -99,9 +99,9 @@ def gestiona_xml(lista):
     if tiempo == None or tiempo == "":
         tiempo = "300"
     for v1,v2 in zip(lista,lista2):
-        documento += "\t<static>\n\t\t<duration>"+tiempo+"</duration>\n\t\t<file>"+v1+"</file>\n\t</static>\n"
-        documento += "\t<transition>\n\t\t<duration>5.0</duration>\n\t\t<from>"+v1+"</from>\n"
-        documento += "\t\t<to>"+v2+"</to>\n\t</transition>\n"
+        documento += "\t<static>\n\t\t<duration>"+tiempo+"</duration>\n\t\t<file>"+globals()['directorio']+"/"+v1+"</file>\n\t</static>\n"
+        documento += "\t<transition>\n\t\t<duration>0.5</duration>\n\t\t<from>"+globals()['directorio']+"/"+v1+"</from>\n"
+        documento += "\t\t<to>"+globals()['directorio']+"/"+v2+"</to>\n\t</transition>\n"
     final = "</background>"
     escribe = documento+final
     return escribe

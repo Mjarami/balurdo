@@ -7,10 +7,10 @@ proceso.py: Archivo de python que permite solicitar al usuario el directorio y a
 start.sh: Archivo de bash que ejecuta el archivo proceso.py.
 lista-imagenes.txt: Archivo generado por proceso.py en el cual se agrega una lista de las imagenes contenidas en el directorio
 fondo.xml: Archivo generado por proceso.py el cual contiene una presentacion de la lista contenida en lista-imagenes.txt para ser cargada por el sistema
+balurdo.sh: Es un archivo creado para poder usar accesos directos.
+
 
 Para iniciar solo debes ejecutar el archivo start.sh, asegurate de que tenga permisos de ejecucion
 para asegurar que todo salga como se debe.
-
-nota: evita ejecutarlo por consola
 
 listo es todo por ahora, espero te funcione
