@@ -15,6 +15,13 @@ def crea_ventana():
     def variable_directorio():
         directorio_text = filedialog.askdirectory()
         globals()['directorio'] = directorio_text
+    def variable_xml():
+        dir_xml = filename = filedialog.asksaveasfilename(
+            filetypes=(
+                ("Archivos xml", "*.xml"),
+            )
+        )
+        globals()['dir_xml'] = dir_xml
     ventana = Tk()
     ventana.title("Balurdo")
     vp = Frame() #Creacion del Frame
@@ -32,14 +39,19 @@ def crea_ventana():
     etiqueta2.grid(column=2, row=4, sticky=(W,E))
     cargar = Button(vp, text="Buscar", command=variable_directorio)
     cargar.grid(column=3, row=4)
-    etiqueta3 = Label(vp, text="Tiempo:")
+    etiqueta3 = Label(vp, text="Tiempo (Seg):")
     etiqueta3.grid(column=2, row=5, sticky=(W,E))
     tiempo = Entry(vp, width=5)
     tiempo.grid(column=3, row=5)
-    boton = Button(vp, text="Guardar", command=devolverDatos)
-    boton.grid(column=2, row=6)
-    boton = Button(vp, text="Cerrar", command=ventana.destroy)
+    globals()['dir_xml'] = ""
+    etiqueta4 = Label(vp, text="XML:")
+    etiqueta4.grid(column=2, row=6, sticky=(W,E))
+    boton = Button(vp, text="Seleccionar", command=variable_xml)
     boton.grid(column=3, row=6)
+    boton = Button(vp, text="Guardar", command=devolverDatos)
+    boton.grid(column=2, row=7)
+    boton = Button(vp, text="Cerrar", command=ventana.destroy)
+    boton.grid(column=3, row=7)
     ventana.mainloop()
 
 def gestiona_archivo(ubicacion, proceso, edita):
@@ -107,7 +119,10 @@ def escribe():
     ## Se procede a estructurar el documento .xml con la lista de imagenes
     escribe = gestiona_xml(lista)
     ## Se crea el documento .xml
-    archivo = gestiona_archivo(os.getcwd()+'/xml/fondo.xml','w', escribe)
+    dir_xml = globals()['dir_xml'].replace(" ","")
+    if dir_xml == None or dir_xml == "":
+        dir_xml = os.getcwd()+"/xml/fondo.xml"
+    archivo = gestiona_archivo(dir_xml,'w', escribe)
 
 crea_ventana()
 
