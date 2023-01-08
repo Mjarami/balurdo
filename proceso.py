@@ -3,17 +3,22 @@ import datetime
 from tkinter import *
 from tkinter import filedialog
 import subprocess
+import random
+import threading
+import time
 
 def tiempo_global():
     tiempo = globals()['tiempo'].replace(" ","")
+    archivo = gestiona_archivo(os.getcwd()+'/procesando/tiempo.txt','w', tiempo)
     return tiempo
 
 def crea_ventana():
     def devolverDatos():
-        globals()['tiempo'] = "{}".format(tiempo.get())
+        globals()['tiempo'] = tiempo.get()
         escribe()
     def variable_directorio():
         directorio_text = filedialog.askdirectory()
+        archivo = gestiona_archivo(os.getcwd()+'/procesando/directorio.txt','w', directorio_text)
         globals()['directorio'] = directorio_text
     def variable_xml():
         dir_xml = filename = filedialog.asksaveasfilename(
@@ -35,23 +40,45 @@ def crea_ventana():
     etiqueta0.grid(column=2, row=3, sticky=(W,E))
     etiqueta1 = Label(vp, text="")
     etiqueta1.grid(column=3, row=3, sticky=(W,E))
-    etiqueta2 = Label(vp, text="Directorio:")
+    etiqueta2 = Label(vp, text="Activo")
     etiqueta2.grid(column=2, row=4, sticky=(W,E))
-    cargar = Button(vp, text="Buscar", command=variable_directorio)
-    cargar.grid(column=3, row=4)
-    etiqueta3 = Label(vp, text="Tiempo (Seg):")
-    etiqueta3.grid(column=2, row=5, sticky=(W,E))
+    etiqueta3 = Label(vp, text="Archivo")
+    etiqueta3.grid(column=3, row=4, sticky=(W,E))
+    etiqueta4 = Label(vp, text="Gestion")
+    etiqueta4.grid(column=4, row=4, sticky=(W,E))
+    directorio_anterior = gestiona_archivo(os.getcwd()+'/procesando/directorio.txt', 'r', "")
+    etiqueta5 = Label(vp, text=directorio_anterior)
+    etiqueta5.grid(column=2, row=5, sticky=(W,E))
+    etiqueta6 = Label(vp, text="<--- Directorio --->")
+    etiqueta6.grid(column=3, row=5, sticky=(W,E))
+    globals()['directorio'] = ""
+    cargar = Button(vp, text="New", command=variable_directorio)
+    cargar.grid(column=4, row=5)
+    tiempo_anterior = gestiona_archivo(os.getcwd()+'/procesando/tiempo.txt', 'r', "")
+    etiqueta7 = Label(vp, text=tiempo_anterior+" Seg")
+    etiqueta7.grid(column=2, row=6, sticky=(W,E))
+    etiqueta8 = Label(vp, text="<--- Tiempo --->")
+    etiqueta8.grid(column=3, row=6, sticky=(W,E))
     tiempo = Entry(vp, width=5)
-    tiempo.grid(column=3, row=5)
+    tiempo.grid(column=4, row=6)
+    xml_anterior = gestiona_archivo(os.getcwd()+'/procesando/xml.txt', 'r', "")
+    etiqueta9 = Label(vp, text=xml_anterior)
+    etiqueta9.grid(column=2, row=7, sticky=(W,E))
+    etiqueta10 = Label(vp, text="<--- XML --->")
+    etiqueta10.grid(column=3, row=7, sticky=(W,E))
     globals()['dir_xml'] = ""
-    etiqueta4 = Label(vp, text="XML:")
-    etiqueta4.grid(column=2, row=6, sticky=(W,E))
-    boton = Button(vp, text="Seleccionar", command=variable_xml)
-    boton.grid(column=3, row=6)
-    boton = Button(vp, text="Guardar", command=devolverDatos)
-    boton.grid(column=2, row=7)
-    boton = Button(vp, text="Cerrar", command=ventana.destroy)
-    boton.grid(column=3, row=7)
+    boton = Button(vp, text="New", command=variable_xml)
+    boton.grid(column=4, row=7)
+    etiqueta11 = Label(vp, text="Feh --->")
+    etiqueta11.grid(column=3, row=8, sticky=(W,E))
+    boton = Button(vp, text="On", command=feh_aleatorio)
+    boton.grid(column=4, row=8)
+    boton = Button(vp, text="Off", command=feh_reset)
+    boton.grid(column=5, row=8)
+    boton = Button(vp, text="Save", command=devolverDatos)
+    boton.grid(column=4, row=9)
+    boton = Button(vp, text="Close", command=ventana.destroy)
+    boton.grid(column=5, row=9)
     ventana.mainloop()
 
 def gestiona_archivo(ubicacion, proceso, edita):
@@ -63,6 +90,30 @@ def gestiona_archivo(ubicacion, proceso, edita):
     f.close()
     return gestiona
 
+def feh_reset():
+    reset_fondo = subprocess.run(["./start.sh"])
+
+def feh_aleatorio():
+    lista = globals()['lista-procesada']
+    tiempo = int(globals()['tiempo'])
+
+    ##revisa_fondo = subprocess.run(
+        ##['ls', '-1'],
+        ##stdout=subprocess.PIPE,
+    ##)
+    ##print('returncode:', completed.returncode)
+
+    ##reset_fondo = subprocess.run(["./start.sh"])
+    def timer(timer_runs):
+        while timer_runs.is_set():
+            fondoaleatorio = random.choice(lista)
+            define_fondo = subprocess.run(["feh", "--bg-scale", globals()['directorio']+"/"+fondoaleatorio])
+            time.sleep(tiempo)
+    timer_runs = threading.Event()
+    timer_runs.set()
+    t = threading.Thread(name='cambiando', target=timer, args=(timer_runs,))
+    t.start()
+    
 def gestiona_cadena(cadena):
     ## Se transforma la cadena en una lista para poder arreglar el contenido
     cadena = cadena.replace(".png",".png,")
@@ -96,6 +147,7 @@ def gestiona_xml(lista):
     lista2 = lista[1:]
     ## Se procede a crear y escribir en el documento .xml
     tiempo = tiempo_global()
+    tiempo = "{}".format(tiempo)
     if tiempo == None or tiempo == "":
         tiempo = "300"
     for v1,v2 in zip(lista,lista2):
@@ -108,7 +160,12 @@ def gestiona_xml(lista):
 
 def escribe():
     ## Se genera el archivo lista-imagenes
-    directorio = globals()['directorio'].replace(" ","")
+    if globals()['directorio'] == None or globals()['directorio'] == "":
+        directorio = gestiona_archivo(os.getcwd()+'/procesando/directorio.txt', 'r', "")
+        globals()['directorio'] = directorio
+    else:
+        directorio = globals()['directorio'].replace(" ","")
+        globals()['directorio'] = directorio
     result = subprocess.run(["ls", directorio], capture_output=True, text=True)
     crea_procesando = subprocess.run(["mkdir", ""+os.getcwd()+"/procesando"])
     crea_xml = subprocess.run(["mkdir", ""+os.getcwd()+"/xml"])
@@ -116,12 +173,14 @@ def escribe():
     ## Se cargan las imagenes leyendo el archivo .txt
     archivo = gestiona_archivo(os.getcwd()+'/procesando/lista-imagenes.txt', 'r', "")
     lista = gestiona_cadena(archivo)
+    globals()['lista-procesada'] = lista
     ## Se procede a estructurar el documento .xml con la lista de imagenes
     escribe = gestiona_xml(lista)
     ## Se crea el documento .xml
     dir_xml = globals()['dir_xml'].replace(" ","")
     if dir_xml == None or dir_xml == "":
-        dir_xml = os.getcwd()+"/xml/fondo.xml"
+        dir_xml = os.getcwd()+"/xml/fondos.xml"
+    archivo = gestiona_archivo(os.getcwd()+'/procesando/xml.txt','w', dir_xml)
     archivo = gestiona_archivo(dir_xml,'w', escribe)
 
 crea_ventana()
