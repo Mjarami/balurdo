@@ -91,28 +91,10 @@ def gestiona_archivo(ubicacion, proceso, edita):
     return gestiona
 
 def feh_reset():
-    reset_fondo = subprocess.run(["./start.sh"])
+    reset_fondo = subprocess.run(["./start2.sh"])
 
 def feh_aleatorio():
-    lista = globals()['lista-procesada']
-    tiempo = int(globals()['tiempo'])
-
-    ##revisa_fondo = subprocess.run(
-        ##['ls', '-1'],
-        ##stdout=subprocess.PIPE,
-    ##)
-    ##print('returncode:', completed.returncode)
-
-    ##reset_fondo = subprocess.run(["./start.sh"])
-    def timer(timer_runs):
-        while timer_runs.is_set():
-            fondoaleatorio = random.choice(lista)
-            define_fondo = subprocess.run(["feh", "--bg-scale", globals()['directorio']+"/"+fondoaleatorio])
-            time.sleep(tiempo)
-    timer_runs = threading.Event()
-    timer_runs.set()
-    t = threading.Thread(name='cambiando', target=timer, args=(timer_runs,))
-    t.start()
+    inicia_fondo = subprocess.run(["./start2.sh"])
     
 def gestiona_cadena(cadena):
     ## Se transforma la cadena en una lista para poder arreglar el contenido
