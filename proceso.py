@@ -3,9 +3,6 @@ import datetime
 from tkinter import *
 from tkinter import filedialog
 import subprocess
-import random
-import threading
-import time
 
 def tiempo_global():
     tiempo = globals()['tiempo'].replace(" ","")
@@ -28,28 +25,24 @@ def crea_ventana():
         )
         globals()['dir_xml'] = dir_xml
     ventana = Tk()
-    ventana.title("Balurdo")
+    ventana.title("F-D-C")
     vp = Frame() #Creacion del Frame
     vp.pack()  #Empaquetamiento del Frame
     ##vp.config(bg="blue") #cambiar color de fondo 
     ##vp.config(width="400", height="200") #cambiar tamaño
-    vp.config(bd=5) #cambiar el grosor del borde
+    vp.config(bd=6) #cambiar el grosor del borde
     vp.config(relief="sunken")   #cambiar el tipo de borde
     ##vp.config(cursor="heart")    #cambiar el tipo de cursor
-    etiqueta0 = Label(vp, text="Bienvenido!!!...")
+    etiqueta0 = Label(vp, text="Welcome!!!...")
     etiqueta0.grid(column=2, row=3, sticky=(W,E))
     etiqueta1 = Label(vp, text="")
     etiqueta1.grid(column=3, row=3, sticky=(W,E))
-    etiqueta2 = Label(vp, text="Activo")
-    etiqueta2.grid(column=2, row=4, sticky=(W,E))
-    etiqueta3 = Label(vp, text="Archivo")
+    etiqueta3 = Label(vp, text="File")
     etiqueta3.grid(column=3, row=4, sticky=(W,E))
-    etiqueta4 = Label(vp, text="Gestion")
-    etiqueta4.grid(column=4, row=4, sticky=(W,E))
     directorio_anterior = gestiona_archivo(os.getcwd()+'/procesando/directorio.txt', 'r', "")
     etiqueta5 = Label(vp, text=directorio_anterior)
     etiqueta5.grid(column=2, row=5, sticky=(W,E))
-    etiqueta6 = Label(vp, text="<--- Directorio --->")
+    etiqueta6 = Label(vp, text="<--- Directory --->")
     etiqueta6.grid(column=3, row=5, sticky=(W,E))
     globals()['directorio'] = ""
     cargar = Button(vp, text="New", command=variable_directorio)
@@ -57,7 +50,7 @@ def crea_ventana():
     tiempo_anterior = gestiona_archivo(os.getcwd()+'/procesando/tiempo.txt', 'r', "")
     etiqueta7 = Label(vp, text=tiempo_anterior+" Seg")
     etiqueta7.grid(column=2, row=6, sticky=(W,E))
-    etiqueta8 = Label(vp, text="<--- Tiempo --->")
+    etiqueta8 = Label(vp, text="<--- Time --->")
     etiqueta8.grid(column=3, row=6, sticky=(W,E))
     tiempo = Entry(vp, width=5)
     tiempo.grid(column=4, row=6)
@@ -69,16 +62,14 @@ def crea_ventana():
     globals()['dir_xml'] = ""
     boton = Button(vp, text="New", command=variable_xml)
     boton.grid(column=4, row=7)
-    etiqueta11 = Label(vp, text="Feh --->")
+    etiqueta11 = Label(vp, text="<--- Feh --->")
     etiqueta11.grid(column=3, row=8, sticky=(W,E))
-    boton = Button(vp, text="On", command=feh_aleatorio)
+    boton = Button(vp, text="Go", command=feh_aleatorio)
     boton.grid(column=4, row=8)
-    boton = Button(vp, text="Off", command=feh_reset)
-    boton.grid(column=5, row=8)
     boton = Button(vp, text="Save", command=devolverDatos)
-    boton.grid(column=4, row=9)
-    boton = Button(vp, text="Close", command=ventana.destroy)
-    boton.grid(column=5, row=9)
+    boton.grid(column=2, row=8)
+    ##boton = Button(vp, text="Close", command=ventana.destroy)
+    ##boton.grid(column=5, row=9)
     ventana.mainloop()
 
 def gestiona_archivo(ubicacion, proceso, edita):
@@ -89,9 +80,6 @@ def gestiona_archivo(ubicacion, proceso, edita):
         gestiona = f.read()
     f.close()
     return gestiona
-
-def feh_reset():
-    reset_fondo = subprocess.run(["./start2.sh"])
 
 def feh_aleatorio():
     inicia_fondo = subprocess.run(["./start2.sh"])
