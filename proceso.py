@@ -30,46 +30,47 @@ def crea_ventana():
     ventana.title("F-D-C")
     vp = Frame() #Creacion del Frame
     vp.pack()  #Empaquetamiento del Frame
-    ##vp.config(bg="blue") #cambiar color de fondo 
+    ##vp.config(bg="white") #cambiar color de fondo 
     ##vp.config(width="400", height="200") #cambiar tamaño
-    vp.config(bd=6) #cambiar el grosor del borde
+    vp.config(bd=5) #cambiar el grosor del borde
     vp.config(relief="sunken")   #cambiar el tipo de borde
-    ##vp.config(cursor="heart")    #cambiar el tipo de cursor
-    etiqueta0 = Label(vp, text="Welcome!!!...")
+    ##cross, dotbox, exchange, fleur
+    vp.config(cursor="pirate")    #cambiar el tipo de cursor
+    etiqueta0 = Label(vp, text="Welcome!!!...", anchor="nw")
     etiqueta0.grid(column=2, row=3, sticky=(W,E))
     etiqueta1 = Label(vp, text="")
     etiqueta1.grid(column=3, row=3, sticky=(W,E))
     etiqueta3 = Label(vp, text="File")
     etiqueta3.grid(column=3, row=4, sticky=(W,E))
     directorio_anterior = gestiona_archivo(os.getcwd()+'/procesando/directorio.txt', 'r', "")
-    etiqueta5 = Label(vp, text=directorio_anterior)
-    etiqueta5.grid(column=2, row=5, sticky=(W,E))
-    etiqueta6 = Label(vp, text="<--- Directory --->")
-    etiqueta6.grid(column=3, row=5, sticky=(W,E))
+    etiqueta4 = Label(vp, text=directorio_anterior)
+    etiqueta4.grid(column=2, row=5, sticky=(W,E))
+    etiqueta5 = Label(vp, text="<--- Directory --->")
+    etiqueta5.grid(column=3, row=5, sticky=(W,E))
     globals()['directorio'] = ""
-    cargar = Button(vp, text="New", command=variable_directorio)
+    cargar = Button(vp, text="New", command=variable_directorio, activebackground="DodgerBlue", activeforeground="white", cursor="plus")
     cargar.grid(column=4, row=5)
     tiempo_anterior = gestiona_archivo(os.getcwd()+'/procesando/tiempo.txt', 'r', "")
-    etiqueta7 = Label(vp, text=tiempo_anterior+" Seg")
-    etiqueta7.grid(column=2, row=6, sticky=(W,E))
-    etiqueta8 = Label(vp, text="<--- Time --->")
-    etiqueta8.grid(column=3, row=6, sticky=(W,E))
+    etiqueta6 = Label(vp, text=tiempo_anterior+" Seg")
+    etiqueta6.grid(column=2, row=6, sticky=(W,E))
+    etiqueta7 = Label(vp, text="<--- Time --->")
+    etiqueta7.grid(column=3, row=6, sticky=(W,E))
     tiempo = Entry(vp, width=5)
     tiempo.grid(column=4, row=6)
     xml_anterior = gestiona_archivo(os.getcwd()+'/procesando/xml.txt', 'r', "")
     globals()['xml_anterior'] = xml_anterior
-    etiqueta9 = Label(vp, text=xml_anterior)
-    etiqueta9.grid(column=2, row=7, sticky=(W,E))
-    etiqueta10 = Label(vp, text="<--- XML --->")
-    etiqueta10.grid(column=3, row=7, sticky=(W,E))
+    etiqueta8 = Label(vp, text=xml_anterior)
+    etiqueta8.grid(column=2, row=7, sticky=(W,E))
+    etiqueta9 = Label(vp, text="<--- XML --->")
+    etiqueta9.grid(column=3, row=7, sticky=(W,E))
     globals()['dir_xml'] = ""
-    boton = Button(vp, text="New", command=variable_xml)
+    boton = Button(vp, text="New", command=variable_xml, activebackground="DodgerBlue", activeforeground="white", cursor="plus")
     boton.grid(column=4, row=7)
-    etiqueta11 = Label(vp, text="<--- Feh --->")
-    etiqueta11.grid(column=3, row=8, sticky=(W,E))
-    boton = Button(vp, text="Go", command=feh_aleatorio)
+    etiqueta10 = Label(vp, text="<--- Feh --->")
+    etiqueta10.grid(column=3, row=8, sticky=(W,E))
+    boton = Button(vp, text="Go", command=feh_aleatorio, activebackground="DodgerBlue", activeforeground="white", cursor="exchange")
     boton.grid(column=4, row=8)
-    boton = Button(vp, text="Save", command=devolverDatos)
+    boton = Button(vp, text="Save", command=devolverDatos, activebackground="DodgerBlue", activeforeground="white", cursor="watch")
     boton.grid(column=2, row=8)
     ##boton = Button(vp, text="Close", command=ventana.destroy)
     ##boton.grid(column=5, row=9)
