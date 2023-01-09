@@ -6,6 +6,8 @@ import subprocess
 
 def tiempo_global():
     tiempo = globals()['tiempo'].replace(" ","")
+    if tiempo == None or tiempo == "":
+        tiempo = "300"
     archivo = gestiona_archivo(os.getcwd()+'/procesando/tiempo.txt','w', tiempo)
     return tiempo
 
@@ -55,6 +57,7 @@ def crea_ventana():
     tiempo = Entry(vp, width=5)
     tiempo.grid(column=4, row=6)
     xml_anterior = gestiona_archivo(os.getcwd()+'/procesando/xml.txt', 'r', "")
+    globals()['xml_anterior'] = xml_anterior
     etiqueta9 = Label(vp, text=xml_anterior)
     etiqueta9.grid(column=2, row=7, sticky=(W,E))
     etiqueta10 = Label(vp, text="<--- XML --->")
@@ -118,8 +121,6 @@ def gestiona_xml(lista):
     ## Se procede a crear y escribir en el documento .xml
     tiempo = tiempo_global()
     tiempo = "{}".format(tiempo)
-    if tiempo == None or tiempo == "":
-        tiempo = "300"
     for v1,v2 in zip(lista,lista2):
         documento += "\t<static>\n\t\t<duration>"+tiempo+"</duration>\n\t\t<file>"+globals()['directorio']+"/"+v1+"</file>\n\t</static>\n"
         documento += "\t<transition>\n\t\t<duration>0.5</duration>\n\t\t<from>"+globals()['directorio']+"/"+v1+"</from>\n"
@@ -148,10 +149,15 @@ def escribe():
     escribe = gestiona_xml(lista)
     ## Se crea el documento .xml
     dir_xml = globals()['dir_xml'].replace(" ","")
+    xml_anterior = globals()['xml_anterior'].replace(" ", "")
     if dir_xml == None or dir_xml == "":
-        dir_xml = os.getcwd()+"/xml/fondos.xml"
+        if xml_anterior == None or xml_anterior == "":
+            dir_xml = os.getcwd()+"/xml/fondos.xml"
+        else:
+            dir_xml = xml_anterior
     archivo = gestiona_archivo(os.getcwd()+'/procesando/xml.txt','w', dir_xml)
     archivo = gestiona_archivo(dir_xml,'w', escribe)
+    actualiza = subprocess.run(["./start.sh"])
 
 crea_ventana()
 
